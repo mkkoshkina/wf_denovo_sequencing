@@ -18,7 +18,7 @@ If you have Casanovo and Peptide-PRISM already installed and you don't want to u
 2. Install singularity according to the tutorial [here](https://docs.sylabs.io/guides/3.0/user-guide/installation.html).
 3. Clone the repository:
    ```bash
-   git clone https://github.com/CrystalColeCrystal/wf_denovo_sequencing.git
+   git clone https://github.com/mkkoshkina/wf_denovo_sequencing.git
    cd wf_denovo_sequencing
    ```
 4. Build the images:
