@@ -1,1 +1,43 @@
-pass
+assert "MAX_RAM_MB" in config, "'MAX_RAM_MB' not in config"
+assert "MAX_THREADS" in config, "'MAX_THREADS' not in config"
+assert "MAX_VRAM_MB" in config, "'MAX_VRAM_MB' not in config"
+MAX_RAM_MB = config["MAX_RAM_MB"]
+MAX_THREADS = config["MAX_THREADS"]
+MAX_VRAM_MB = config["MAX_VRAM_MB"]
+
+rule convert_format:
+    input:
+        mztab = "_data/casanovo/{project}/{project}.mztab"
+    output:
+        csv = "_data/prism/{project}/{project}_toprism.csv"
+    singularity:
+        "workflow/containers/image/python.3.12.2.debian.sif"
+    resources:
+        threads=1
+    shell:
+        '''
+        python workflow/shell/format_conversion_for_PRISM.py --input_mztab {input.mztab} --output_csv {output.csv}
+        '''
+
+rule run_Peptide_PRISM:
+    input:
+        csv = "_data/prism/{project}/{project}_toprism.csv"
+    output:
+        annotated = "_data/prism/{project}/{project}_toprism.csv.pep.annotated.csv.gz"
+    singularity:
+        "workflow/containers/image/peptide.prism.1.1.0.ubuntu.env.sif"
+    params:
+        genome = lambda wildcards: get_dataset(wildcards.project).genome,
+        extra_flags = lambda wildcards: " ".join(filter(None, [
+            "-rnaseq {}".format(get_dataset(wildcards.project).rnaseq) if get_dataset(wildcards.project).rnaseq else None,
+            "-var {}".format(get_dataset(wildcards.project).var) if get_dataset(wildcards.project).var else None,
+            "-extra {}".format(get_dataset(wildcards.project).extra) if get_dataset(wildcards.project).extra else None
+        ]))
+    resources:
+        threads=MAX_THREADS,
+        mem_mb=MAX_RAM_MB
+    shell:
+        '''
+        java -jar workflow/shell/Peptide-PRISM/Prism.jar -in {input.csv} -g genomes/{params.genome}/{params.genome} -progress -D {params.extra_flags}
+        '''
+
