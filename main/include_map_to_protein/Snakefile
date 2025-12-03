@@ -1,1 +1,29 @@
-blablabla
+assert "MAX_RAM_MB" in config, "'MAX_RAM_MB' not in config"
+assert "MAX_THREADS" in config, "'MAX_THREADS' not in config"
+assert "MAX_VRAM_MB" in config, "'MAX_VRAM_MB' not in config"
+MAX_RAM_MB = config["MAX_RAM_MB"]
+MAX_THREADS = config["MAX_THREADS"]
+MAX_VRAM_MB = config["MAX_VRAM_MB"]
+
+class ProteinMapping():
+    def __init__(self, 
+                project, #name of your project
+                canonical_proteome='_data/proteomes/uniprotkb_with_isoforms_reviewed_true_AND_model_organ_2024_10_29.fasta', #Fasta file containing the canonical proteome
+                extra_fasta=None, #Fasta file containing extra protein sequences
+    ):
+        self.project = project 
+        self.canonical_proteome = canonical_proteome 
+        self.extra_fasta = extra_fasta
+
+PROTEIN_MAPPINGS = []
+
+rule all:
+    input:
+        csv = [f"_data/ahocorasick/{protein_mapping.project}/{protein_mapping.project}_mapped.csv" for protein_mapping in PROTEIN_MAPPINGS]
+
+rule map_peptides:
+    input:
+        mztab = "_data/casanovo/{project}/{project}.mztab"
+    output:
+        csv = "_data/ahocorasick/{project}/{project}_mapped.csv"
+    singularity:

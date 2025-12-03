@@ -36,10 +36,7 @@ def get_dataset(project):
 
 rule all:
     input:
-        casanovo_mztab = [f"_data/casanovo/{seq.project}/{seq.project}.mztab" for seq in SEQS],
-        csv = [f"_data/prism/{seq.project}/{seq.project}_toprism.csv" for seq in SEQS],
-        prism = [f"_data/prism/{seq.project}/{seq.project}_toprism.csv.pep.annotated.csv.gz" for seq in SEQS]
-
+        casanovo_mztab = [f"_data/casanovo/{seq.project}/{seq.project}.mztab" for seq in SEQS]
 
 rule run_Casanovo:
     input:
