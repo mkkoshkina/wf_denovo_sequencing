@@ -27,3 +27,14 @@ rule map_peptides:
     output:
         csv = "_data/ahocorasick/{project}/{project}_mapped.csv"
     singularity:
+        "workflow/containers/image/python.3.11.pyahocorasick.sif"
+    params:
+        canonical_proteome = lambda wildcards: get_dataset(wildcards.project).canonical_proteome,
+        extra_flags = lambda wildcards: " ".join(filter(None, [
+            "-extra_fasta {}".format(get_dataset(wildcards.project).extra_fasta) if get_dataset(wildcards.project).extra_fasta else None
+        ]))
+    shell:
+        '''
+        python workflow/shell/map_proteins.py --input_mztab {input.mztab} --output_csv {output.csv} --canonical_proteome {params.canonical_proteome} {params.extra_flags}
+        '''
+

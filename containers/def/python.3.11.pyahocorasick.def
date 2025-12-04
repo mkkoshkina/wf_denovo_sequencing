@@ -1,0 +1,23 @@
+Bootstrap: docker
+From: python:3.11-slim
+
+%post
+    # Update packages
+    apt-get update && apt-get install -y --no-install-recommends \
+        build-essential \
+        gcc \
+        python3-dev \
+        pip \
+        && rm -rf /var/lib/apt/lists/*
+
+    # Install Python dependencies
+    pip install --no-cache-dir \
+        pandas \
+        biopython \
+        pyahocorasick
+
+
+%environment
+    export LC_ALL=C
+    export LANG=C
+    export PATH="/usr/local/bin:$PATH"

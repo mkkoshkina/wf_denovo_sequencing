@@ -1,3 +1,6 @@
+include: "../../include_map_to_protein/Snakefile"
+include: "../../include_map_to_RNA/Snakefile"
+
 assert "MAX_RAM_MB" in config, "'MAX_RAM_MB' not in config"
 assert "MAX_THREADS" in config, "'MAX_THREADS' not in config"
 assert "MAX_VRAM_MB" in config, "'MAX_VRAM_MB' not in config"
@@ -11,22 +14,37 @@ class DenovoSequencing():
     def __init__(self, 
                 project, #name of your project
                 MS_data, #path to the folder with MS data (.mzML)
-                genome, #name of your genome that you generated with IndexGenome.jar
                 model='casanovo_nontryptic.ckpt', #name of your Casanovo model file
+                map_to_protein=False, #whether to map to protein databas
+                extra_fasta=None,
+                canonical_proteome='_data/proteomes/uniprotkb_with_isoforms_reviewed_true_AND_model_organ_2024_10_29.fasta',
+                map_to_RNA=False,
+                genome='GRCh38.p14', #name of your genome that you generated with IndexGenome.jar
                 extra=None, #Fasta file containing extra sequences (DNA will be 6-frame translated!)!
                 rnaseq=None, #Fasta file containing extra transcript sequences (will be 3-frame translated!)!
                 var=None #File containing variants (each line); could also be in ${input%.csv}.var, in which case you do not have to specify this parameter!
                 ):
         self.project = project 
         self.MS_data = MS_data 
-        self.genome = genome 
         self.model = model
-        self.extra = extra 
-        self.rnaseq = rnaseq 
-        self.var = var 
+        self.map_to_protein = map_to_protein
+        self.extra_fasta = extra_fasta
+        self.canonical_proteome = canonical_proteome
+        self.map_to_RNA = map_to_RNA
+        self.genome = genome
+        self.extra = extra
+        self.rnaseq = rnaseq
+        self.var = var
+
+        if self.map_to_protein:
+            PROTEIN_MAPPINGS.append(ProteinMapping(self.project, self.canonical_proteome, self.extra_fasta))
+        if self.map_to_RNA:
+            RNA_MAPPINGS.append(RNAMapping(self.project, self.genome, self.extra, self.rnaseq, self.var))
 
 if "todo" in config:
     include: f"profiles/{config['todo']}/todo.py"
+
+
 
 def get_dataset(project):
     for dataset in SEQS:

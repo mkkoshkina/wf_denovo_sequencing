@@ -32,7 +32,7 @@ rule convert_format:
     output:
         csv = "_data/prism/{project}/{project}_toprism.csv"
     singularity:
-        "containers/image/python.3.12.2.debian.sif"
+        "workflow/containers/image/python.3.12.2.debian.sif"
     resources:
         threads=1
     shell:
@@ -46,7 +46,7 @@ rule run_Peptide_PRISM:
     output:
         annotated = "_data/prism/{project}/{project}_toprism.csv.pep.annotated.csv.gz"
     singularity:
-        "containers/image/peptide.prism.1.1.0.ubuntu.env.sif"
+        "workflow/containers/image/peptide.prism.1.1.0.ubuntu.env.sif"
     params:
         genome = lambda wildcards: get_dataset(wildcards.project).genome,
         extra_flags = lambda wildcards: " ".join(filter(None, [
