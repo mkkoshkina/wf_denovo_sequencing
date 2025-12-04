@@ -17,7 +17,7 @@ class ProteinMapping():
 
 PROTEIN_MAPPINGS = []
 
-rule all:
+rule all_map_to_protein:
     input:
         csv = [f"_data/ahocorasick/{protein_mapping.project}/{protein_mapping.project}_mapped.csv" for protein_mapping in PROTEIN_MAPPINGS]
 
@@ -33,6 +33,10 @@ rule map_peptides:
         extra_flags = lambda wildcards: " ".join(filter(None, [
             "-extra_fasta {}".format(get_dataset(wildcards.project).extra_fasta) if get_dataset(wildcards.project).extra_fasta else None
         ]))
+    resources:
+        threads=1,
+        mem_mb=MAX_RAM_MB,
+        runtime=10
     shell:
         '''
         python workflow/shell/map_proteins.py --input_mztab {input.mztab} --output_csv {output.csv} --canonical_proteome {params.canonical_proteome} {params.extra_flags}

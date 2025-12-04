@@ -1,0 +1,27 @@
+# Profile: navet
+rerun-incomplete: True
+printshellcmds: True
+benchmark-extended: True
+keep-going: True
+
+# RESOURCES
+executor: slurm
+jobs: 300
+retries: 3
+default-resources:
+  slurm_account: dev
+  slurm_partition: dev  
+  runtime: 10
+  mem_mb: 1000
+  tasks: 1
+  cpus_per_task: 1
+  # slurm_extra: "'--exclude=node07,node08'"
+
+# REPRODUCIBILITY
+use-apptainer: True
+singularity-args: "--bind /mnt/beegfs/home/mkoshkin/"
+
+# CONFIG
+config:
+  MAX_RAM_MB: 2000000
+  todo: soroban

@@ -21,7 +21,7 @@ class RNAMapping():
 
 RNA_MAPPINGS = []
 
-rule all:
+rule all_map_to_rna:
     input:
         csv = [f"_data/prism/{rna_mapping.project}/{rna_mapping.project}_toprism.csv" for rna_mapping in RNA_MAPPINGS],
         prism = [f"_data/prism/{rna_mapping.project}/{rna_mapping.project}_toprism.csv.pep.annotated.csv.gz" for rna_mapping in RNA_MAPPINGS]
