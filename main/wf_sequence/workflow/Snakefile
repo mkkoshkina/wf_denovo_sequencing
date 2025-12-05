@@ -17,7 +17,7 @@ class DenovoSequencing():
                 model='casanovo_nontryptic.ckpt', #name of your Casanovo model file
                 map_to_protein=False, #whether to map to protein databas
                 extra_fasta=None,
-                canonical_proteome='_data/proteomes/uniprotkb_with_isoforms_reviewed_true_AND_model_organ_2024_10_29.fasta',
+                canonical_proteome=None,
                 map_to_RNA=False,
                 genome='GRCh38.p14', #name of your genome that you generated with IndexGenome.jar
                 extra=None, #Fasta file containing extra sequences (DNA will be 6-frame translated!)!
@@ -44,8 +44,6 @@ class DenovoSequencing():
 if "todo" in config:
     include: f"profiles/{config['todo']}/todo.py"
 
-
-
 def get_dataset(project):
     for dataset in SEQS:
         if dataset.project == project:
@@ -54,7 +52,9 @@ def get_dataset(project):
 
 rule all:
     input:
-        casanovo_mztab = [f"_data/casanovo/{seq.project}/{seq.project}.mztab" for seq in SEQS]
+        [f"_data/casanovo/{seq.project}/{seq.project}.mztab" for seq in SEQS] +
+        [f"_data/ahocorasick/{protein_mapping.project}/{protein_mapping.project}_mapped.csv" for protein_mapping in PROTEIN_MAPPINGS] +
+        [f"_data/prism/{rna_mapping.project}/{rna_mapping.project}_toprism.csv.pep.annotated.csv.gz" for rna_mapping in RNA_MAPPINGS]
 
 rule run_Casanovo:
     input:
@@ -69,7 +69,7 @@ rule run_Casanovo:
         vram=MAX_VRAM_MB,
         threads=MAX_THREADS,
         mem_mb=MAX_RAM_MB,
-        runtime=100
+        runtime=360
     shell:
         '''
         casanovo sequence -o {output.mztab} -m model/{params.model} -c model/config.yaml -v info {input.MS_data}/*.mzML

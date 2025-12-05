@@ -6,10 +6,6 @@ import itertools
 import argparse
 import time
 
-uniprot = SeqIO.to_dict(SeqIO.parse("/mnt/raid0/HP/uniprotkb_with_isoforms_reviewed_true_AND_model_organ_2024_10_29.fasta", "fasta"))
-d = {'name': uniprot.keys(), 'seq': uniprot.values()}
-df_uni = pd.DataFrame.from_dict(d)
-
 def clear_seq(s):
     s_2 = re.sub(r"[^A-Z]", "", s)
     return s_2
@@ -83,6 +79,10 @@ def main():
     parser.add_argument('--canonical_proteome', required=True, help='Path to canonical proteome fasta')
     parser.add_argument('--extra_fasta', required=False, help='Path to extra fasta to include in search')
     args = parser.parse_args()
+    #0 open the canonical proteome as dataframe
+    uniprot = SeqIO.to_dict(SeqIO.parse(args.canonical_proteome, "fasta"))
+    d = {'name': uniprot.keys(), 'seq': uniprot.values()}
+    df_uni = pd.DataFrame.from_dict(d)
     #1 open the input mztab as dataframe
     with open(args.input_mztab,"r") as fi:
         k=0
@@ -92,14 +92,15 @@ def main():
                 starts=k-1
     df = pd.read_csv(args.input_mztab, sep='\t', header=starts)
     #2 map peptides to the canonical proteome
+    start_time = time.time()
     df['seq_clear'] = df['sequence'].apply(clear_seq)
     search_result = search_in_database_with_I_L_changed(df['seq_clear'].unique().tolist(), df_uni)
     df['IL_substitution'] = df['seq_clear'].apply(get_all_IL_LI_substitutions)
     df = df.explode('IL_substitution')
     df['canonical_proteome_match'] = df['seq_clear'].apply(lambda x: search_result[x])
     df['canonical_proteome_match_with_IL_change'] = df['IL_substitution'].apply(lambda x: search_result[x] if not(pd.isna(x)) else [])
-    df['canonical_proteome_match_bool'] = df['canonical_proteome'].apply(lambda x: True if len(x)!=0 else False)
-    df['canonical_proteome_bool_with_IL_change'] = df['canonical_proteome_with_IL_change'].apply(lambda x: True if len(x)!=0 else False)
+    df['canonical_proteome_match_bool'] = df['canonical_proteome_match'].apply(lambda x: True if len(x)!=0 else False)
+    df['canonical_proteome_bool_with_IL_change'] = df['canonical_proteome_match_with_IL_change'].apply(lambda x: True if len(x)!=0 else False)
     #3 if extra fasta is given, map to that too
     if args.extra_fasta:
         extra_db = SeqIO.to_dict(SeqIO.parse(args.extra_fasta, "fasta"))
