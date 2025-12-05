@@ -9,10 +9,11 @@ executor: slurm
 jobs: 300
 retries: 3
 default-resources:
-  slurm_account: dev
-  slurm_partition: dev  
+  slurm_account: dev_gpu
+  slurm_partition: dev_gpu  
+  slurm_gres: gpu:1
   runtime: 10
-  mem_mb: 1000
+  mem_mb: 900000
   tasks: 1
   cpus_per_task: 1
   # slurm_extra: "'--exclude=node07,node08'"
@@ -23,7 +24,7 @@ singularity-args: "--bind /mnt/beegfs/home/mkoshkin/"
 
 # CONFIG
 config:
-  MAX_RAM_MB: 187000
-  MAX_THREADS: 40
-  MAX_VRAM_MB:  80000
+  MAX_RAM_MB: 900000
+  MAX_THREADS: 64
+  MAX_VRAM_MB:  95830
   todo: soroban
