@@ -23,5 +23,7 @@ singularity-args: "--bind /mnt/beegfs/home/mkoshkin/"
 
 # CONFIG
 config:
-  MAX_RAM_MB: 2000000
+  MAX_RAM_MB: 187000
+  MAX_THREADS: 40
+  MAX_VRAM_MB:  80000
   todo: soroban
