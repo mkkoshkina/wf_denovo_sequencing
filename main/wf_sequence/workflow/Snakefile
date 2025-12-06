@@ -60,7 +60,7 @@ rule run_Casanovo:
     input:
         MS_data = lambda wildcards: get_dataset(wildcards.project).MS_data
     output:
-        mztab = "_data/casanovo/{project}/{project}.mztab"
+        mztab = "_data/casanovo/{project}/{project}"
     singularity:
         "workflow/containers/image/python.3.10.15.gpu.ubuntu.sif"
     params:
@@ -72,8 +72,7 @@ rule run_Casanovo:
         runtime=360
     shell:
         '''
-	rm -f {output.mztab}.log
-        casanovo sequence -o {output.mztab} -m model/{params.model} -c model/config.yaml -v info {input.MS_data}/*.mzML
+        casanovo sequence -f -o {output.mztab} -m model/{params.model} -c model/config.yaml -v info {input.MS_data}/*.mzML
         '''
 
 
