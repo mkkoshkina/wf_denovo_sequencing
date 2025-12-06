@@ -20,7 +20,7 @@ default-resources:
 
 # REPRODUCIBILITY
 use-apptainer: True
-singularity-args: "--nv --bind /mnt/beegfs/home/mkoshkin/ --env CUDA_VISIBLE_DEVICES"
+singularity-args: "--nv --bind /mnt/beegfs/home/mkoshkin/ --env CUDA_VISIBLE_DEVICES=$CUDA_VISIBLE_DEVICES"
 
 # CONFIG
 config:
