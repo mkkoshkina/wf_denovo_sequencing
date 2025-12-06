@@ -1,0 +1,9 @@
+2025-12-05 15:43:43,351 INFO [casanovo/MainProcess] utils.log_system_info : ======= System Information =======
+2025-12-05 15:43:43,352 INFO [casanovo/MainProcess] utils.log_system_info : Executed Command: /usr/local/bin/casanovo version
+2025-12-05 15:43:43,352 INFO [casanovo/MainProcess] utils.log_system_info : Host Machine: soroban
+2025-12-05 15:43:43,352 INFO [casanovo/MainProcess] utils.log_system_info : OS: Linux
+2025-12-05 15:43:43,352 INFO [casanovo/MainProcess] utils.log_system_info : OS Version: #1 SMP PREEMPT_DYNAMIC Tue Jun 3 12:46:50 EDT 2025
+2025-12-05 15:43:43,353 INFO [casanovo/MainProcess] utils.log_system_info : Python Version: 3.10.12
+2025-12-05 15:43:43,353 INFO [casanovo/MainProcess] utils.log_system_info : Casanovo Version: 5.1.1
+2025-12-05 15:43:43,353 INFO [casanovo/MainProcess] utils.log_system_info : Depthcharge Version: 0.4.8
+2025-12-05 15:43:43,353 INFO [casanovo/MainProcess] utils.log_system_info : PyTorch Version: 2.5.1+cu124
