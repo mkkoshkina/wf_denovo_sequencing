@@ -15,12 +15,12 @@ default-resources:
   runtime: "10:00:00"
   mem_mb: 900000
   tasks: 1
-  cpus_per_task: 1
+  cpus_per_task: 8
   # slurm_extra: "'--exclude=node07,node08'"
 
 # REPRODUCIBILITY
 use-apptainer: True
-singularity-args: "--bind /mnt/beegfs/home/mkoshkin/"
+singularity-args: "--nv --bind /mnt/beegfs/home/mkoshkin/ --env CUDA_VISIBLE_DEVICES"
 
 # CONFIG
 config:

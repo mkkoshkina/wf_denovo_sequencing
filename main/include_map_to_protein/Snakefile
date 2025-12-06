@@ -36,7 +36,7 @@ rule map_peptides:
     resources:
         threads=1,
         mem_mb=MAX_RAM_MB,
-        runtime=10
+        runtime=120
     shell:
         '''
         python workflow/shell/map_proteins.py --input_mztab {input.mztab} --output_csv {output.csv} --canonical_proteome {params.canonical_proteome} {params.extra_flags}
