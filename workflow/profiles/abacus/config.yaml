@@ -9,7 +9,7 @@ resources:
 
 # REPRODUCIBILITY
 use-apptainer: True
-singularity-args: "--bind /mnt/beegfs/home/mveyssie/stagein/home/mveyssie/Documents/Projects/immuno_rhabdoid --nv"
+singularity-args: "--bind <path to directory containing workflow and data> --nv"
 ## example: singularity-args: "--bind /mnt/beegfs/home/mveyssie/stagein/home/mveyssie/Documents/Projects/immuno_rhabdoid --nv"
 
 # CONFIG
