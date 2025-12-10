@@ -24,9 +24,9 @@ If you have Casanovo and Peptide-PRISM already installed and you don't want to u
 4. Build the images:
    ```bash
    cd workflow/containers
-   sudo sungularity build image/python.3.12.2.debian.sif def/python.3.12.2.debian.def
-   sudo sungularity build image/python.3.10.15.gpu.ubuntu.sif def/python.3.10.15.gpu.ubuntu.def
-   sudo sungularity build image/peptide.prism.1.1.0.ubuntu.env.sif def/peptide.prism.1.1.0.ubuntu.env.def
+   sudo singularity build image/python.3.12.2.debian.sif def/python.3.12.2.debian.def
+   sudo singularity build image/python.3.10.15.gpu.ubuntu.sif def/python.3.10.15.gpu.ubuntu.def
+   sudo singularity build image/peptide.prism.1.1.0.ubuntu.env.sif def/peptide.prism.1.1.0.ubuntu.env.def
    cd ../../
    ```
    The python.3.10.15.gpu.ubuntu.sif image for Casanovo execution is built with cuda:12.4.0. This may need to be adjusted depending on your GPU.

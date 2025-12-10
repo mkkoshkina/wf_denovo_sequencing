@@ -4,6 +4,7 @@ From: nvidia/cuda:12.4.0-runtime-ubuntu22.04
 %post
     # System updates
     apt-get update && apt-get install -y python3-pip python3.10-venv
+    apt-get install -y libxrender1 libxtst6 libxi6
 
     # Install matching PyTorch stack (2.5.1 + cu124)
     pip3 install --no-cache-dir \
@@ -13,7 +14,7 @@ From: nvidia/cuda:12.4.0-runtime-ubuntu22.04
         --index-url https://download.pytorch.org/whl/cu124
 
     # Install casanovo
-    pip3 install --no-cache-dir casanovo
+    pip3 install --no-cache-dir casanovo==4.3.0
 
     # Cleanup
     apt-get clean && rm -rf /root/.cache /var/lib/apt/lists/*
