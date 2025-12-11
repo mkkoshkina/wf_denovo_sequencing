@@ -1,0 +1,21 @@
+rerun-incomplete: True
+printshellcmds: True
+#benchmark-extended: True
+
+core: 10
+resources:
+  - mem_mb=100000 #Mb
+  - vram=30000
+
+# REPRODUCIBILITY
+use-apptainer: True
+singularity-args: "--bind <path to directory containing workflow and data> --nv"
+## example: singularity-args: "--bind /mnt/beegfs/home/mveyssie/stagein/home/mveyssie/Documents/Projects/immuno_rhabdoid --nv"
+
+# CONFIG
+config:
+  MAX_RAM_MB: 100000 #Mb
+  MAX_THREADS: 10
+  MAX_VRAM_MB: 30000
+  PRISM: "workflow/shell/Peptide-PRISM"
+  todo: abacus
