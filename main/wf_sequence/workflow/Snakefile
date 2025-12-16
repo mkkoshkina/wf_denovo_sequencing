@@ -14,7 +14,7 @@ class DenovoSequencing():
     def __init__(self, 
                 project, #name of your project
                 MS_data, #path to the folder with MS data (.mzML)
-                model='casanovo_massivekb.ckpt', #name of your Casanovo model file
+                model='casanovo_v4_2_0.ckpt', #name of your Casanovo model file
                 map_to_protein=False, #whether to map to protein databas
                 extra_fasta=None,
                 canonical_proteome=None,
@@ -62,7 +62,7 @@ rule run_Casanovo:
     output:
         mztab = "_data/casanovo/{project}/{project}.mztab"
     singularity:
-        "workflow/containers/image/python.3.10.15.gpu.ubuntu.sif"
+        "workflow/containers/image/python.3.10.15.casanovo.4.3.0.ubuntu.sif"
     params:
         tmp_mztab = "_data/casanovo/{project}/{project}",
         model = lambda wildcards: get_dataset(wildcards.project).model,
