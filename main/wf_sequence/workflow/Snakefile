@@ -73,7 +73,7 @@ rule run_Casanovo:
         runtime=600
     shell:
         '''
-        casanovo sequence -o {params.tmp_mztab} -m model/{params.model} -c model/config.yaml -v info {input.MS_data}/*.mzML
+        casanovo sequence -o {params.tmp_mztab} -m model/{params.model} -c model/config_v4.yaml -v info {input.MS_data}/*.mzML
         mv {params.tmp_mztab} {output.mztab}
         '''
 
